@@ -1,0 +1,12 @@
+git_kurs/not_commit
+# Datei not_commit wird ignoiert
+
+git_kurs/Ordner_offline
+git_kurs/Geheim
+# Die Ordner Ordner_offline und Geheim werden ignoriert
+
+git_kurs/*.dat
+# Alle Dateien, welche auf .dat enden, werden ignoriert
+
+git_kurs/*sex*
+# Alle Dateien/Ordner mit dem Wort sex im namen werden ignoriert

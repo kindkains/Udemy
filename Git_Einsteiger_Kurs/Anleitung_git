@@ -1,0 +1,96 @@
+Befehle:
+--------
+git config --global user.email "silver@darksilver@posteo.de"	# setzt die email Variable im Abschnitt [user] der ~/.gitconfig
+git config --global user.name "Sandro Isoletta"			# setzt die user Variable im Abschnitt [user] der ~/.gitconfig
+git config --global push.default simple				# setzt den Modus "matching" und bedeutet, dass bei git push ohne weitere Branchangabe alle Branches gepusht werden, 
+								# für die ein passender Remotebranch existiert.
+git config --global push.default matching			# setzt stattdessen den Modus "simple" und bedeutet, dass bei git push nur der aktuelle Branch gepusht wird.
+
+git status							# Gibt den aktuellen Stauts des Repositorys aus
+git init							# Initialisiert den aktuellen Ordner als Git-Repository (der Ordner .git wird angelegt)
+git add DATEI/ORDNER						# Fügt Dateien und/oder Ordner dem Repository hinzu.
+								# git status listet diese dann im Staging Bereich auf, sozusagen auf der "Warteliste" für's Commit
+git commit -m "Dies ist eine Commit Message"			# Änderungen an Dateien und Ordnern im Repository, sowie neu hinzugefügte werden commited
+git commit -am "Noch ein Commit"				# Änderungen werden automatisch hinzugefügt, so spart man sich den Zwischenschrit mit git add...
+git reset HEAD Geheim						# setzt den Staging Bereich auf die aktuell letzte Version zurück, so wird der versehentlich hinzugefügte Ordner
+								# "Geheim" wieder von der Warteliste geworfen und kann bspw. dann nachträglich in die .gitignore eingetragen werden
+git log								# Zeigt einem das Log der letzten Commits ausführlich und übersichtlich an (Autor, Datum, Uhrzeit, Message...)
+git log --oneline						# Zeigt das Log in einer gekürzten Fassung mit nur der commit ID und der commit Message an
+git log --oneline --decorate					# Wie oneline, nur werden hier die Branches mit angezeigt
+git log -- DATEINAME						# Zeigt nur die Logs der betroffenden Datei oder Ordners an z. B. git log -- .gitignore
+git log --stat							# Zeigt im Log für jeden Commit welche Datei geändert wurde und wieviele Änderungen die Dateien hatten
+git log -n ANZAHL						# Zeigt einem die letzten n Commits an, also z. B. mit git log -n 3 die letzten 3 durchgeführten Commits 
+git log --after "2018-01-11"					# Zeige nur Commits an, welche NACH dem 11.01.2018 durchgeführt wurden
+git log --after "2018-01-01" --before "2018.02.28"		# Zeige nur Commits an, welche zwischen dem 01.01.2018 und dem 28.02.2018 durchgeführt wurden
+
+git branch feature1						# Erstelle den Branch "feature1"
+git branch							# Zeige mir die Branches an und wo ich mich befinde
+git checkout feature1						# Wechsle in den Branch feature1
+git checkout -b feature2					# Erstelle einen neuen Branch feature2 und wechsel sofort in diesen
+git merge feature1						# Führe den Branch feature1 mit dem Branch master zusammen (auf Master ausführen)
+								# Dies ist nur dann möglich, wenn auf master keine neuen Commits in der Zwischenzeit hinzu gekommen sind
+
+Andernfalls erhält man eine Fehlermeldung, welche auf einen Konflikt hinweist.
+Beispiel:
+Im Branch feature1 wurde die Datei datei1 bearbeitet und commited. Anschließend wurde die Datei auch auf dem Branch master bearbeitet und commited,
+aber mit anderen Daten. 
+
+git merge feature1
+automatischer Merge von Datei1
+KONFLIKT (Inhalt): Merge-Konflikt in Datei1
+Automatischer Merge fehlgeschlagen; beheben Sie die Konflikte und committen Sie dann das Ergebnis.
+
+git branch merged						# Zeigt alle Branches an, welche mit meinem aktuellen Branch bereits gemerged wurden
+git branch --no-merged						# Zeigt alle Branches an, welche noch nicht mit meinem aktuellen Branch gemerged wurden
+git branch -d feature1						# Löschen von Branch feature1
+git branch -D feature1						# Löscht den Branch feature1 auch dann, wenn er noch nicht gemerged wurde
+								# Branch feature1 entfernt (war 15a159b)
+git checkout 15a159b						# Wechselt in den gelöschten Branch feature1 (mit dessen commit id)
+git checkout -b feature1					# Stellt den gelöschten Branch feature1 wieder her (Schritt zuvor muss ausgeführt sein)
+
+git remote add origin https://github.com/kindkains/skripte	# Fügt das entfernte Repository "skripte" auf github als Hauptrepoquelle hinzu
+git push -u origin master					# Fragt nach User und PW von Github und pushed den commit auf das Repository
+git clone https://github.com/kindkains/skripte.git		# Clont das Repository auf einer anderen Maschine
+
+git revert COMMIT-ID						# Einen Commit wieder rückgängig machen bsp.: git revert a4393a778419e5f52613827fdb999a12616c1a8a
+
+# Alias erstellen
+git config --global alias.st status				# Erzeugt den Alias "git st" welcher die Funktion "git status" aufruft
+
+Dies wird in der Datei ~/.gitconfig festgehalten, man kann diese auch manuell bearbeiten, um Aliase zu erzeugen
+
+Das schaut dann z. B. so aus:
+
+~/.gitconfig
+------------
+[user]
+	email = silver@darksilver@posteo.de
+	name = Sandro Isoletta
+[alias]
+	cp = cherry-pick
+	st = status
+	cl = clone 
+	ci = commit 
+	co = checkout 
+	br = branch
+
+
+.gitignore
+----------
+Mit der Datei .gitignore kann man festlegen, welche Dateien und/oder Ordner im Verzeichnis von git ignoriert werden sollen.
+So werden einfach untereinander die jeweiligen Datei- und Ordnernamen eingetragen. Auch Wildcards sind erlaubt.
+So führt der Eintrag
+
+*.dat
+
+dazu, dass alle Dateien, welche auf .dat enden, von git igoriert werden.
+
+Für diesen Zweck gibt es auch fertige Templates zu populären Programmen auf der Webseite
+
+www.gitignore.io
+
+Wenn man z. B. in Visual Studio entwickelt, so gibt man im Suchfeld der o. g. Seite einfach VisualStudio ein und klickt auf den Button
+"create" und schon erhält man eine .gitignore Datei, welche auf VisualStudio zugeschnitten ist und dort z. B. bin Dateien, Debug Dateien usw.
+ausschließt.
+
+sh 
